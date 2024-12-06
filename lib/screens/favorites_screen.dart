@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 import '../services/storage_service.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  late Future<List<Map<String, dynamic>>> _favoritesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites();
+  }
+
+  void _loadFavorites() {
+    setState(() {
+      _favoritesFuture = StorageService.loadFavorites();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +30,7 @@ class FavoritesScreen extends StatelessWidget {
         title: const Text('Mes Favoris'),
       ),
       body: FutureBuilder(
-        future: StorageService.loadFavorites(),
+        future: _favoritesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -19,8 +38,8 @@ class FavoritesScreen extends StatelessWidget {
             return Center(child: Text('Erreur : ${snapshot.error}'));
           }
 
-          final favorites = snapshot.data as List<Map<String, dynamic>>;
-          if (favorites.isEmpty) {
+          final favorites = snapshot.data as List<Map<String, dynamic>>?;
+          if (favorites == null || favorites.isEmpty) {
             return const Center(
               child: Text('Aucun favori pour le moment.'),
             );
@@ -40,7 +59,7 @@ class FavoritesScreen extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Supprimé des favoris!')),
                     );
-                    (context as Element).reassemble();
+                    _loadFavorites(); // Rafraîchit la liste
                   },
                 ),
               );
