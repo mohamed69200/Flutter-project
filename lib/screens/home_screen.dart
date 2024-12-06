@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/favorites');
             },
           ),
-          s
         ],
       ),
       body: FutureBuilder(
