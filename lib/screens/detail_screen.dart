@@ -3,7 +3,7 @@ import '../services/api_service.dart';
 import '../services/storage_service.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+  const DetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +54,13 @@ class DetailScreen extends StatelessWidget {
                         },
                         icon: const Icon(Icons.favorite),
                         label: const Text('Ajouter aux favoris'),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Back to Home'),
                       ),
                     ],
                   ),
