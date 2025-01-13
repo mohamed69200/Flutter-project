@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.favorite),
+            color: Colors.pink,
             onPressed: () {
               Navigator.pushNamed(context, '/favorites');
             },
